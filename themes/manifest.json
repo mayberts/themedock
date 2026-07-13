@@ -19,7 +19,7 @@
       "slug": "halo-unsc",
       "name": "HALO UNSC CLASSIC",
       "path": "themes/theme-options/halo-unsc.css",
-      "description": "Dark military greens, UNSC steel, and Spartan blue accents, inspired by Halo 1-3. Works across every app listed below — same palette, different base CSS.",
+      "description": "Dark military greens, UNSC steel, and Spartan blue accents, inspired by Halo 1-3. Works across every app listed below: same palette, different base CSS.",
       "accent": "#1a6fb5"
     }
   ]

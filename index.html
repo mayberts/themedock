@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ThemeDock — self-hosted CSS themes</title>
+  <title>ThemeDock: self-hosted CSS themes</title>
   <meta name="description" content="Self-hosted custom CSS themes for Unraid and your containers.">
 
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
@@ -169,13 +169,13 @@
 
   <main>
     <p class="tagline">
-      Self-hosted custom CSS themes for Unraid and your containers — grab a URL or snippet
+      Self-hosted custom CSS themes for Unraid and your containers. Grab a URL or snippet
       below and drop it into your app's custom CSS field.
     </p>
 
     <section>
       <h2 class="section-title">Unraid</h2>
-      <p class="section-desc">Standalone, self-contained stylesheets — one raw URL, paste it into Unraid's custom CSS field.</p>
+      <p class="section-desc">Standalone, self-contained stylesheets. One raw URL, paste it into Unraid's custom CSS field.</p>
       <div id="standalone-grid" class="grid"></div>
     </section>
 
@@ -246,7 +246,7 @@
           const card = document.createElement("div");
           card.className = "card";
           card.innerHTML = `
-            ${withPreview(opt.accent, opt.preview, `${app.app} — ${opt.name}`)}
+            ${withPreview(opt.accent, opt.preview, `${app.app}: ${opt.name}`)}
             <div class="app-tag">${app.app}</div>
             <h2>${opt.name}</h2>
             <p>${opt.description}</p>

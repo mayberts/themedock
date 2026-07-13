@@ -1,12 +1,12 @@
 # ThemeDock
 
-Self-hosted custom CSS themes for **Unraid** and your **containers** — all served as plain
+Self-hosted custom CSS themes for **Unraid** and your **containers**. All served as plain
 files straight from this repo, no build step required.
 
 There are two theming models here:
 
-- **Unraid** — one standalone, self-contained stylesheet per theme.
-- **Multi-app themes** (Overseerr, Sonarr, Radarr, etc.) — a **base** stylesheet per app
+- **Unraid**: one standalone, self-contained stylesheet per theme.
+- **Multi-app themes** (Overseerr, Sonarr, Radarr, etc.): a **base** stylesheet per app
   (defines the app's DOM hooks) plus a **theme-options** file (just sets CSS variables/palette).
   One theme-options file works across every app, since they share the same variable names.
 
@@ -31,7 +31,7 @@ Paste **both** `@import` lines into the app's custom CSS field:
 @import url("https://raw.githubusercontent.com/mayberts/themedock/main/themes/theme-options/halo-unsc.css");
 ```
 
-Swap the base URL for whichever app you're theming — same theme-options line works for all of them.
+Swap the base URL for whichever app you're theming; the same theme-options line works for all of them.
 The gallery's "Copy CSS snippet" button generates this for you per app.
 
 ## Repo structure
@@ -58,7 +58,7 @@ THIRD_PARTY_NOTICES.md   # required license attribution for third-party base CSS
 ### A new Unraid (standalone) theme
 
 1. Drop the `.css` file under `themes/unraid/<theme-slug>.css`.
-2. (Optional) Add a screenshot as `themes/unraid/<theme-slug>.preview.png` (16:9) — otherwise
+2. (Optional) Add a screenshot as `themes/unraid/<theme-slug>.preview.png` (16:9); otherwise
    the card just shows a color swatch. CSS can't be live-previewed on its own since it targets
    Unraid's real dashboard DOM.
 3. Add an entry to `manifest.json`'s `"standalone"` array:
@@ -79,7 +79,7 @@ THIRD_PARTY_NOTICES.md   # required license attribution for third-party base CSS
 
 1. Add its base CSS under `themes/base/<app-slug>/<app-slug>-base.css`. Fix any `@import`
    paths to be relative to this repo.
-2. Add an entry to `manifest.json`'s `"apps"` array — it'll automatically get a card for every
+2. Add an entry to `manifest.json`'s `"apps"` array; it'll automatically get a card for every
    existing theme-option:
 
 ```json
@@ -89,7 +89,7 @@ THIRD_PARTY_NOTICES.md   # required license attribution for third-party base CSS
 ### A new theme-option (palette, works across all apps)
 
 1. Add the file under `themes/theme-options/<theme-slug>.css`.
-2. Add an entry to `manifest.json`'s `"themeOptions"` array — it'll automatically pair with
+2. Add an entry to `manifest.json`'s `"themeOptions"` array; it'll automatically pair with
    every app already listed:
 
 ```json
@@ -106,6 +106,6 @@ Open a PR with any of the above.
 
 ## Branding
 
-- `assets/icon.svg` / `assets/logo.svg` — source vector mark and wordmark.
-- `assets/og-image.svg` (+ rendered `.png`) — social preview card.
+- `assets/icon.svg` / `assets/logo.svg`: source vector mark and wordmark.
+- `assets/og-image.svg` (+ rendered `.png`): social preview card.
 - Favicons and app icons are pre-rendered PNGs/ICO generated from `icon.svg`.

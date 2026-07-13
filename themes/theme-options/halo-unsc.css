@@ -1,5 +1,5 @@
 /* ==================================================
-   HALO UNSC CLASSIC — ThemeDock theme-options file
+   HALO UNSC CLASSIC: ThemeDock theme-options file
    Brighter background variant of theme.park's stock
    halo.css. Only the background colors changed; palette,
    buttons and text unchanged.
@@ -28,7 +28,7 @@
   --button-text:          #c8d8c8;
   --button-text-hover:    #ffffff;
 
-  /* Accent — keep the triplet syntax */
+  /* Accent: keep the triplet syntax */
   --accent-color:         26, 111, 181;
   --accent-color-hover:   rgb(var(--accent-color), .8);
 
