@@ -17,11 +17,16 @@ Browse both at the GitHub Pages site: `https://mayberts.github.io/themedock/`
 ### Unraid (standalone)
 
 Unraid has no built-in custom CSS field. Install the **Custom WebUi CSS** plugin from
-Community Applications, then paste the raw URL into its settings field:
+Community Applications, then paste the URL into its settings field:
 
 ```
-https://raw.githubusercontent.com/mayberts/themedock/main/themes/unraid/halo-unsc-classic.css
+https://mayberts.github.io/themedock/themes/unraid/halo-unsc-classic.css
 ```
+
+Use the GitHub Pages URL, not `raw.githubusercontent.com`. GitHub's raw-file endpoint always
+serves files as `Content-Type: text/plain`, which browsers refuse to apply as a stylesheet
+(you'll see it fail to load with no visible error unless you check DevTools). Pages serves the
+same file with the correct `text/css` type.
 
 ### Multi-app themes (base + theme-options)
 
@@ -33,13 +38,17 @@ stylesheets by injecting them at your reverse proxy instead.
 
 ```nginx
 proxy_set_header Accept-Encoding "";
-sub_filter '</head>' '<link rel="stylesheet" href="https://raw.githubusercontent.com/mayberts/themedock/main/themes/base/overseerr/overseerr-base.css"><link rel="stylesheet" href="https://raw.githubusercontent.com/mayberts/themedock/main/themes/theme-options/halo-unsc.css"></head>';
+sub_filter '</head>' '<link rel="stylesheet" href="https://mayberts.github.io/themedock/themes/base/overseerr/overseerr-base.css"><link rel="stylesheet" href="https://mayberts.github.io/themedock/themes/theme-options/halo-unsc.css"></head>';
 sub_filter_once on;
 ```
 
 Swap the base URL for whichever app you're theming; the theme-options line stays the same
-across all of them. Two things that matter:
+across all of them. Three things that matter:
 
+- Use the GitHub Pages URL (`mayberts.github.io/themedock/...`), not `raw.githubusercontent.com`.
+  GitHub's raw-file endpoint always serves `Content-Type: text/plain`, and browsers silently
+  refuse to apply a stylesheet with the wrong MIME type, no visible error unless you check
+  DevTools' Issues tab ("Verify stylesheet URLs"). Pages serves the same file as `text/css`.
 - `proxy_set_header Accept-Encoding "";` is required. `sub_filter` can't rewrite a gzip-compressed
   response, and these apps gzip their HTML by default; skip this line and the injection silently
   does nothing.

@@ -4,11 +4,16 @@
    halo.css. Only the background colors changed; palette,
    buttons and text unchanged.
 
-   Usage: paste the two @import lines below (with your app's
-   raw base CSS URL) into that app's "custom CSS" field:
+   Usage: most apps have no custom CSS field, so inject both stylesheets
+   at your reverse proxy instead (see README.md for the Nginx Proxy
+   Manager sub_filter method). If your setup does accept raw CSS text,
+   paste the two @import lines below (with your app's base CSS URL):
 
-     @import url("https://raw.githubusercontent.com/mayberts/themedock/main/themes/base/<app>/<app>-base.css");
-     @import url("https://raw.githubusercontent.com/mayberts/themedock/main/themes/theme-options/halo-unsc.css");
+     @import url("https://mayberts.github.io/themedock/themes/base/<app>/<app>-base.css");
+     @import url("https://mayberts.github.io/themedock/themes/theme-options/halo-unsc.css");
+
+   Use the GitHub Pages URL, not raw.githubusercontent.com, which serves
+   text/plain and gets silently rejected as a stylesheet MIME type.
 
    IMPORTANT: --accent-color and --gitea-color-primary-dark-4
    stay as bare "R, G, B" triplets. Do not convert to hex.

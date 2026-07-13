@@ -202,7 +202,7 @@
   </footer>
 
   <script>
-    const REPO_RAW_BASE = "https://raw.githubusercontent.com/mayberts/themedock/main/";
+    const SITE_BASE = "https://mayberts.github.io/themedock/";
 
     function withPreview(accent, preview, name) {
       return preview
@@ -223,7 +223,7 @@
     function renderStandalone(themes) {
       const grid = document.getElementById("standalone-grid");
       for (const theme of themes) {
-        const rawUrl = REPO_RAW_BASE + theme.path;
+        const rawUrl = SITE_BASE + theme.path;
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
@@ -244,9 +244,9 @@
     function renderCombos(apps, themeOptions) {
       const grid = document.getElementById("combo-grid");
       for (const opt of themeOptions) {
-        const optUrl = REPO_RAW_BASE + opt.path;
+        const optUrl = SITE_BASE + opt.path;
         for (const app of apps) {
-          const baseUrl = REPO_RAW_BASE + app.basePath;
+          const baseUrl = SITE_BASE + app.basePath;
           const importSnippet = `@import url("${baseUrl}");\n@import url("${optUrl}");`;
           const npmSnippet = [
             'proxy_set_header Accept-Encoding "";',
