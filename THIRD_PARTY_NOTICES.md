@@ -2,11 +2,13 @@
 
 ## theme.park base CSS
 
-The files under `themes/base/` and `themes/defaults/` originate from
+The files under `themes/base/`, `themes/defaults/`, and
+`themes/theme-options/dracula.css` originate from
 [gilbN/theme.park](https://github.com/gilbN/theme.park), used here (via
-`mayberts/theme.park`) under the MIT License. `@import` paths were rewritten
-from theme.park's container-relative `/css/...` paths to paths relative to
-this repo's layout; no other changes were made to those files.
+`mayberts/theme.park`) under the MIT License. `@import` paths in the base
+and defaults files were rewritten from theme.park's container-relative
+`/css/...` paths to paths relative to this repo's layout; `dracula.css` is
+unmodified aside from an added header comment.
 
 ```
 MIT License

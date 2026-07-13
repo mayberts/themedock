@@ -21,6 +21,13 @@
       "path": "themes/theme-options/halo-unsc.css",
       "description": "Dark military greens, UNSC steel, and Spartan blue accents, inspired by Halo 1-3. Works across every app listed below: same palette, different base CSS.",
       "accent": "#1a6fb5"
+    },
+    {
+      "slug": "dracula",
+      "name": "DRACULA",
+      "path": "themes/theme-options/dracula.css",
+      "description": "Purple, pink, and green accents on a dark blue-gray background, the classic Dracula palette. Works across every app listed below: same palette, different base CSS.",
+      "accent": "#bd93f9"
     }
   ]
 }
