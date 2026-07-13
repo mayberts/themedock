@@ -1,0 +1,62 @@
+/* ==================================================
+   HALO UNSC CLASSIC — ThemeDock theme-options file
+   Brighter background variant of theme.park's stock
+   halo.css. Only the background colors changed; palette,
+   buttons and text unchanged.
+
+   Usage: paste the two @import lines below (with your app's
+   raw base CSS URL) into that app's "custom CSS" field:
+
+     @import url("https://raw.githubusercontent.com/mayberts/themedock/main/themes/base/<app>/<app>-base.css");
+     @import url("https://raw.githubusercontent.com/mayberts/themedock/main/themes/theme-options/halo-unsc.css");
+
+   IMPORTANT: --accent-color and --gitea-color-primary-dark-4
+   stay as bare "R, G, B" triplets. Do not convert to hex.
+================================================== */
+
+:root {
+  /* Backgrounds (lifted off near-black, green-teal retained) */
+  --main-bg-color:        #15211c;   /* page background        */
+  --modal-bg-color:       #0f1915;   /* modals / panels / menus */
+  --modal-header-color:   #0f1915;
+  --modal-footer-color:   #0f1915;
+  --drop-down-menu-bg:    #0f1915;
+
+  /* Buttons (Spartan blue) */
+  --button-color:         #1a6fb5;
+  --button-color-hover:   #4ab3e8;
+  --button-text:          #c8d8c8;
+  --button-text-hover:    #ffffff;
+
+  /* Accent — keep the triplet syntax */
+  --accent-color:         26, 111, 181;
+  --accent-color-hover:   rgb(var(--accent-color), .8);
+
+  /* Links */
+  --link-color:           #4ab3e8;
+  --link-color-hover:     #8fd9ff;
+
+  /* Text */
+  --label-text-color:     #eaf2f2;
+  --text:                 #c8d8c8;
+  --text-hover:           #ffffff;
+  --text-muted:           #7a8c84;
+
+  /* Specials (per-app, safe to leave as-is) */
+  --arr-queue-color:           #4ab3e8;
+  --plex-poster-unwatched:     #1a6fb5;
+  --gitea-color-primary-dark-4: 26, 111, 181;
+  --overseerr-gradient: linear-gradient(180deg, rgba(21,33,28,0.17) 0%, rgba(21,33,28) 100%);
+  --petio-spinner: invert(79%) sepia(27%) saturate(1033%) hue-rotate(74deg) brightness(104%) contrast(96%);
+}
+
+/* react-hot-toast container (Overseerr/Jellyseerr) is an empty
+   full-viewport fixed div; stop the base painting it as an overlay */
+[data-rht-toaster] {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}

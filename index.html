@@ -61,6 +61,19 @@
       margin: 0 0 2rem;
       line-height: 1.5;
     }
+    section + section { margin-top: 2.5rem; }
+    section h2.section-title {
+      font-size: 1rem;
+      margin: 0 0 .3rem;
+      color: var(--text);
+    }
+    section p.section-desc {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      font-size: .85rem;
+      max-width: 65ch;
+      line-height: 1.5;
+    }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -157,54 +170,104 @@
   <main>
     <p class="tagline">
       Self-hosted custom CSS themes for Unraid and your containers — a theme-park-style
-      catalog you point your apps' custom CSS URL at. Grab a raw URL below and drop it in.
+      catalog you point your apps' custom CSS at.
     </p>
 
-    <div id="grid" class="grid"></div>
+    <section>
+      <h2 class="section-title">Unraid</h2>
+      <p class="section-desc">Standalone, self-contained stylesheets — one raw URL, paste it into Unraid's custom CSS field.</p>
+      <div id="standalone-grid" class="grid"></div>
+    </section>
+
+    <section>
+      <h2 class="section-title">theme.park-style apps</h2>
+      <p class="section-desc">
+        Two-layer theming: each app has a base stylesheet, and a theme-options file sets the
+        palette on top of it. Copy the snippet for your app and paste both lines into that
+        app's custom CSS field.
+      </p>
+      <div id="combo-grid" class="grid"></div>
+    </section>
   </main>
 
   <footer>
     Built with <code class="inline">themes/manifest.json</code> · contribute a theme via pull request on
-    <a href="https://github.com/mayberts/themedock">GitHub</a>
+    <a href="https://github.com/mayberts/themedock">GitHub</a> · base CSS from
+    <a href="https://github.com/gilbN/theme.park">theme.park</a> (MIT)
   </footer>
 
   <script>
     const REPO_RAW_BASE = "https://raw.githubusercontent.com/mayberts/themedock/main/";
 
-    async function render() {
-      const res = await fetch("themes/manifest.json");
-      const themes = await res.json();
-      const grid = document.getElementById("grid");
+    function withPreview(accent, preview, name) {
+      return preview
+        ? `<img class="preview" src="${preview}" alt="${name} preview" loading="lazy"
+             onerror="this.replaceWith(Object.assign(document.createElement('div'), {className:'swatch', style:'background:${accent}'}))">`
+        : `<div class="swatch" style="background:${accent}"></div>`;
+    }
 
+    function copyButton(btn, text) {
+      btn.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.textContent = "Copied!";
+        setTimeout(() => (btn.textContent = original), 1200);
+      });
+    }
+
+    function renderStandalone(themes) {
+      const grid = document.getElementById("standalone-grid");
       for (const theme of themes) {
         const rawUrl = REPO_RAW_BASE + theme.path;
-
-        const preview = theme.preview
-          ? `<img class="preview" src="${theme.preview}" alt="${theme.name} preview" loading="lazy"
-               onerror="this.replaceWith(Object.assign(document.createElement('div'), {className:'swatch', style:'background:${theme.accent}'}))">`
-          : `<div class="swatch" style="background:${theme.accent}"></div>`;
-
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
-          ${preview}
+          ${withPreview(theme.accent, theme.preview, theme.name)}
           <div class="app-tag">${theme.app}</div>
           <h2>${theme.name}</h2>
           <p>${theme.description}</p>
           <div class="actions">
-            <button class="primary" data-url="${rawUrl}">Copy raw CSS URL</button>
+            <button class="primary">Copy raw CSS URL</button>
             <a class="btn" href="${theme.path}" target="_blank" rel="noopener">View CSS</a>
           </div>
         `;
-        card.querySelector("button.primary").addEventListener("click", async (e) => {
-          const btn = e.currentTarget;
-          await navigator.clipboard.writeText(btn.dataset.url);
-          const original = btn.textContent;
-          btn.textContent = "Copied!";
-          setTimeout(() => (btn.textContent = original), 1200);
-        });
+        copyButton(card.querySelector("button.primary"), rawUrl);
         grid.appendChild(card);
       }
+    }
+
+    function renderCombos(apps, themeOptions) {
+      const grid = document.getElementById("combo-grid");
+      for (const opt of themeOptions) {
+        const optUrl = REPO_RAW_BASE + opt.path;
+        for (const app of apps) {
+          const baseUrl = REPO_RAW_BASE + app.basePath;
+          const snippet = `@import url("${baseUrl}");\n@import url("${optUrl}");`;
+
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            ${withPreview(opt.accent, opt.preview, `${app.app} — ${opt.name}`)}
+            <div class="app-tag">${app.app}</div>
+            <h2>${opt.name}</h2>
+            <p>${opt.description}</p>
+            <div class="actions">
+              <button class="primary">Copy CSS snippet</button>
+              <a class="btn" href="${app.basePath}" target="_blank" rel="noopener">Base CSS</a>
+              <a class="btn" href="${opt.path}" target="_blank" rel="noopener">Theme file</a>
+            </div>
+          `;
+          copyButton(card.querySelector("button.primary"), snippet);
+          grid.appendChild(card);
+        }
+      }
+    }
+
+    async function render() {
+      const res = await fetch("themes/manifest.json");
+      const manifest = await res.json();
+      renderStandalone(manifest.standalone);
+      renderCombos(manifest.apps, manifest.themeOptions);
     }
 
     render();

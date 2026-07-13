@@ -1,10 +1,26 @@
-[
-  {
-    "app": "Unraid",
-    "slug": "unraid",
-    "name": "HALO UNSC CLASSIC",
-    "path": "themes/unraid/halo-unsc-classic.css",
-    "description": "Dark military greens, UNSC steel, and Spartan blue accents with a frosted-glass dashboard, inspired by Halo 1-3.",
-    "accent": "#3a7a3a"
-  }
-]
+{
+  "standalone": [
+    {
+      "app": "Unraid",
+      "slug": "unraid",
+      "name": "HALO UNSC CLASSIC",
+      "path": "themes/unraid/halo-unsc-classic.css",
+      "description": "Dark military greens, UNSC steel, and Spartan blue accents with a frosted-glass dashboard, inspired by Halo 1-3.",
+      "accent": "#3a7a3a"
+    }
+  ],
+  "apps": [
+    { "app": "Overseerr", "slug": "overseerr", "basePath": "themes/base/overseerr/overseerr-base.css" },
+    { "app": "Sonarr", "slug": "sonarr", "basePath": "themes/base/sonarr/sonarr-base.css" },
+    { "app": "Radarr", "slug": "radarr", "basePath": "themes/base/radarr/radarr-base.css" }
+  ],
+  "themeOptions": [
+    {
+      "slug": "halo-unsc",
+      "name": "HALO UNSC CLASSIC",
+      "path": "themes/theme-options/halo-unsc.css",
+      "description": "Dark military greens, UNSC steel, and Spartan blue accents, inspired by Halo 1-3. Works across every app listed below — same palette, different base CSS.",
+      "accent": "#1a6fb5"
+    }
+  ]
+}
