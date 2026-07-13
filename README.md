@@ -16,7 +16,8 @@ Browse both at the GitHub Pages site: `https://mayberts.github.io/themedock/`
 
 ### Unraid (standalone)
 
-Paste the raw URL into Settings → Display Settings → `custom` field:
+Unraid has no built-in custom CSS field. Install the **Custom WebUi CSS** plugin from
+Community Applications, then paste the raw URL into its settings field:
 
 ```
 https://raw.githubusercontent.com/mayberts/themedock/main/themes/unraid/halo-unsc-classic.css
@@ -24,15 +25,30 @@ https://raw.githubusercontent.com/mayberts/themedock/main/themes/unraid/halo-uns
 
 ### Multi-app themes (base + theme-options)
 
-Paste **both** `@import` lines into the app's custom CSS field:
+Overseerr/Jellyseerr, Sonarr, and Radarr don't have a custom CSS field either. Apply the
+stylesheets by injecting them at your reverse proxy instead.
 
-```css
-@import url("https://raw.githubusercontent.com/mayberts/themedock/main/themes/base/overseerr/overseerr-base.css");
-@import url("https://raw.githubusercontent.com/mayberts/themedock/main/themes/theme-options/halo-unsc.css");
+**Nginx Proxy Manager**: edit the app's Proxy Host, open the **Advanced** tab, and add to
+**Custom Nginx Configuration**:
+
+```nginx
+proxy_set_header Accept-Encoding "";
+sub_filter '</head>' '<link rel="stylesheet" href="https://raw.githubusercontent.com/mayberts/themedock/main/themes/base/overseerr/overseerr-base.css"><link rel="stylesheet" href="https://raw.githubusercontent.com/mayberts/themedock/main/themes/theme-options/halo-unsc.css"></head>';
+sub_filter_once on;
 ```
 
-Swap the base URL for whichever app you're theming; the same theme-options line works for all of them.
-The gallery's "Copy CSS snippet" button generates this for you per app.
+Swap the base URL for whichever app you're theming; the theme-options line stays the same
+across all of them. Two things that matter:
+
+- `proxy_set_header Accept-Encoding "";` is required. `sub_filter` can't rewrite a gzip-compressed
+  response, and these apps gzip their HTML by default; skip this line and the injection silently
+  does nothing.
+- If the stylesheet still doesn't apply, check the browser console for a Content-Security-Policy
+  error. Some apps block cross-origin stylesheets by default and need the CSP header relaxed too.
+
+The gallery's "Copy NPM config" button generates this snippet for you per app. "Copy @import
+snippet" is also available for apps/setups that do accept raw CSS text directly (e.g. via a
+browser extension like Stylus, or an app that does have a custom CSS textarea).
 
 ## Repo structure
 

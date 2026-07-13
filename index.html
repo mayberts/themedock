@@ -122,6 +122,7 @@
     }
     .actions {
       display: flex;
+      flex-wrap: wrap;
       gap: .5rem;
     }
     button, a.btn {
@@ -169,13 +170,16 @@
 
   <main>
     <p class="tagline">
-      Self-hosted custom CSS themes for Unraid and your containers. Grab a URL or snippet
-      below and drop it into your app's custom CSS field.
+      Self-hosted custom CSS themes for Unraid and your containers. Grab a URL, snippet, or
+      reverse-proxy config below.
     </p>
 
     <section>
       <h2 class="section-title">Unraid</h2>
-      <p class="section-desc">Standalone, self-contained stylesheets. One raw URL, paste it into Unraid's custom CSS field.</p>
+      <p class="section-desc">
+        Standalone, self-contained stylesheets. Install the <strong>Custom WebUi CSS</strong>
+        plugin from Community Applications, then paste the raw URL into its settings field.
+      </p>
       <div id="standalone-grid" class="grid"></div>
     </section>
 
@@ -183,8 +187,10 @@
       <h2 class="section-title">Multi-app themes</h2>
       <p class="section-desc">
         Two-layer theming: each app has a base stylesheet, and a theme-options file sets the
-        palette on top of it. Copy the snippet for your app and paste both lines into that
-        app's custom CSS field.
+        palette on top of it. None of these apps have a native custom CSS field, so apply
+        them at your reverse proxy instead. "Copy NPM config" gives you a ready-to-paste
+        Nginx Proxy Manager snippet (Advanced tab &rarr; Custom Nginx Configuration); "Copy
+        @import snippet" is for setups that do accept raw CSS text (e.g. Stylus).
       </p>
       <div id="combo-grid" class="grid"></div>
     </section>
@@ -241,7 +247,12 @@
         const optUrl = REPO_RAW_BASE + opt.path;
         for (const app of apps) {
           const baseUrl = REPO_RAW_BASE + app.basePath;
-          const snippet = `@import url("${baseUrl}");\n@import url("${optUrl}");`;
+          const importSnippet = `@import url("${baseUrl}");\n@import url("${optUrl}");`;
+          const npmSnippet = [
+            'proxy_set_header Accept-Encoding "";',
+            `sub_filter '</head>' '<link rel="stylesheet" href="${baseUrl}"><link rel="stylesheet" href="${optUrl}"></head>';`,
+            "sub_filter_once on;",
+          ].join("\n");
 
           const card = document.createElement("div");
           card.className = "card";
@@ -251,12 +262,14 @@
             <h2>${opt.name}</h2>
             <p>${opt.description}</p>
             <div class="actions">
-              <button class="primary">Copy CSS snippet</button>
+              <button class="primary npm-btn">Copy NPM config</button>
+              <button class="import-btn">Copy @import snippet</button>
               <a class="btn" href="${app.basePath}" target="_blank" rel="noopener">Base CSS</a>
               <a class="btn" href="${opt.path}" target="_blank" rel="noopener">Theme file</a>
             </div>
           `;
-          copyButton(card.querySelector("button.primary"), snippet);
+          copyButton(card.querySelector("button.npm-btn"), npmSnippet);
+          copyButton(card.querySelector("button.import-btn"), importSnippet);
           grid.appendChild(card);
         }
       }
