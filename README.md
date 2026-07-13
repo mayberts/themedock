@@ -1,12 +1,12 @@
 # ThemeDock
 
-Self-hosted custom CSS themes for **Unraid** and your **containers** (theme-park.dev style) —
-all served as plain files straight from this repo, no build step required.
+Self-hosted custom CSS themes for **Unraid** and your **containers** — all served as plain
+files straight from this repo, no build step required.
 
-There are two theming models here, matching how each ecosystem actually works:
+There are two theming models here:
 
 - **Unraid** — one standalone, self-contained stylesheet per theme.
-- **theme.park-style apps** (Overseerr, Sonarr, Radarr, etc.) — a **base** stylesheet per app
+- **Multi-app themes** (Overseerr, Sonarr, Radarr, etc.) — a **base** stylesheet per app
   (defines the app's DOM hooks) plus a **theme-options** file (just sets CSS variables/palette).
   One theme-options file works across every app, since they share the same variable names.
 
@@ -22,7 +22,7 @@ Paste the raw URL into Settings → Display Settings → `custom` field:
 https://raw.githubusercontent.com/mayberts/themedock/main/themes/unraid/halo-unsc-classic.css
 ```
 
-### theme.park-style apps (base + theme-options)
+### Multi-app themes (base + theme-options)
 
 Paste **both** `@import` lines into the app's custom CSS field:
 
@@ -41,7 +41,7 @@ themes/
   manifest.json         # catalog metadata used by the gallery page
   unraid/
     halo-unsc-classic.css
-  base/                  # per-app base CSS (theme.park-style, from gilbN/theme.park)
+  base/                  # per-app base CSS
     overseerr/overseerr-base.css
     sonarr/sonarr-base.css
     radarr/radarr-base.css
@@ -50,7 +50,7 @@ themes/
     halo-unsc.css
 index.html               # gallery / catalog page
 assets/                  # logo, favicons, app icons, social preview image
-THIRD_PARTY_NOTICES.md   # attribution for theme.park base CSS (MIT)
+THIRD_PARTY_NOTICES.md   # required license attribution for third-party base CSS
 ```
 
 ## Adding to the catalog
@@ -75,10 +75,10 @@ THIRD_PARTY_NOTICES.md   # attribution for theme.park base CSS (MIT)
 }
 ```
 
-### A new app (theme.park-style)
+### A new app (base + theme-options model)
 
-1. Add its base CSS under `themes/base/<app-slug>/<app-slug>-base.css` (from theme.park's
-   `css/base/<app>/`, or write your own). Fix any `@import` paths to be relative to this repo.
+1. Add its base CSS under `themes/base/<app-slug>/<app-slug>-base.css`. Fix any `@import`
+   paths to be relative to this repo.
 2. Add an entry to `manifest.json`'s `"apps"` array — it'll automatically get a card for every
    existing theme-option:
 
