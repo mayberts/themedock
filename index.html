@@ -264,10 +264,17 @@
     }
 
     async function render() {
-      const res = await fetch("themes/manifest.json");
-      const manifest = await res.json();
-      renderStandalone(manifest.standalone);
-      renderCombos(manifest.apps, manifest.themeOptions);
+      try {
+        const res = await fetch(`themes/manifest.json?v=${Date.now()}`, { cache: "no-store" });
+        if (!res.ok) throw new Error(`manifest.json returned HTTP ${res.status}`);
+        const manifest = await res.json();
+        renderStandalone(manifest.standalone || []);
+        renderCombos(manifest.apps || [], manifest.themeOptions || []);
+      } catch (err) {
+        const msg = `<p style="color:#f87171">Couldn't load the theme catalog: ${err.message}. Try a hard refresh (Ctrl/Cmd+Shift+R).</p>`;
+        document.getElementById("standalone-grid").innerHTML = msg;
+        console.error(err);
+      }
     }
 
     render();
