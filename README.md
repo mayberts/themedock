@@ -33,7 +33,12 @@ assets/                # logo, favicons, app icons, social preview image
 ## Adding a new theme
 
 1. Drop the `.css` file under `themes/<app-slug>/<theme-slug>.css`.
-2. Add an entry to `themes/manifest.json`:
+2. (Optional but recommended) Apply the theme on a real instance of the app, take a
+   screenshot, and save it alongside the CSS as `themes/<app-slug>/<theme-slug>.preview.png`
+   (16:9 works best for the gallery card). Skip this and the card just shows a color swatch
+   instead — themes aren't previewable by rendering the CSS alone, since each app's real DOM
+   is required for it to look right.
+3. Add an entry to `themes/manifest.json`:
 
 ```json
 {
@@ -42,11 +47,14 @@ assets/                # logo, favicons, app icons, social preview image
   "name": "My Theme",
   "path": "themes/sonarr/my-theme.css",
   "description": "One line describing the look.",
-  "accent": "#22d3ee"
+  "accent": "#22d3ee",
+  "preview": "themes/sonarr/my-theme.preview.png"
 }
 ```
 
-3. Open a PR.
+`preview` is optional — omit it and the gallery falls back to the `accent` color swatch.
+
+4. Open a PR.
 
 ## Branding
 

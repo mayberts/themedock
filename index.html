@@ -98,6 +98,15 @@
       height: 6px;
       border-radius: 3px;
     }
+    .preview {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0e1626;
+      margin-bottom: .2rem;
+    }
     .actions {
       display: flex;
       gap: .5rem;
@@ -170,10 +179,15 @@
       for (const theme of themes) {
         const rawUrl = REPO_RAW_BASE + theme.path;
 
+        const preview = theme.preview
+          ? `<img class="preview" src="${theme.preview}" alt="${theme.name} preview" loading="lazy"
+               onerror="this.replaceWith(Object.assign(document.createElement('div'), {className:'swatch', style:'background:${theme.accent}'}))">`
+          : `<div class="swatch" style="background:${theme.accent}"></div>`;
+
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
-          <div class="swatch" style="background:${theme.accent}"></div>
+          ${preview}
           <div class="app-tag">${theme.app}</div>
           <h2>${theme.name}</h2>
           <p>${theme.description}</p>
