@@ -99,8 +99,8 @@ themes/
       halo/
         halo-base.css
         halo.css
-        logo/halo-logo.png       # not tracked here yet, see note below
-        wallpaper/halo-bg.png    # not tracked here yet, see note below
+        halo-logo.png
+        halo-bg.png
 index.html               # gallery / catalog page
 assets/                  # logo, favicons, app icons, social preview image
 THIRD_PARTY_NOTICES.md   # required license attribution for third-party base CSS
