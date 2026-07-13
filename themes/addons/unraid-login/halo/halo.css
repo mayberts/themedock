@@ -8,6 +8,13 @@
      halo-base.css     (one-liner, imports the alien base)
      halo-logo.png      (transparent PNG logo)
      halo-bg.png        (background image)
+
+   IMPORTANT: --main-bg and --logo below use absolute URLs on purpose, not
+   relative ones. Relative url()s inside a custom property are resolved
+   against whichever stylesheet actually *uses* the variable (here, the
+   imported alien-base.css, which lives in a different folder), not the
+   stylesheet that *defines* it. A relative path here would 404 against
+   the wrong folder. Keep these absolute if you copy this file elsewhere.
 */
 
 @import url("../alien/alien-base.css");
@@ -21,9 +28,9 @@
     /* Dark gradient over your wallpaper keeps the login box legible */
     --main-bg:
         linear-gradient(rgba(3, 11, 18, 0.55), rgba(3, 11, 18, 0.80)),
-        url("halo-bg.png") center center / cover no-repeat fixed;
+        url("https://mayberts.github.io/themedock/themes/addons/unraid-login/halo/halo-bg.png") center center / cover no-repeat fixed;
 
-    --logo: url("halo-logo.png") center no-repeat;
+    --logo: url("https://mayberts.github.io/themedock/themes/addons/unraid-login/halo/halo-logo.png") center no-repeat;
 
     /* UNSC HUD palette */
     --text-color:               #5ad1e6;
