@@ -28,6 +28,24 @@ serves files as `Content-Type: text/plain`, which browsers refuse to apply as a 
 (you'll see it fail to load with no visible error unless you check DevTools). Pages serves the
 same file with the correct `text/css` type.
 
+### Unraid login page
+
+The dashboard theme above doesn't touch Unraid's login screen, that's a separate page with
+its own markup, themed separately. There's no plugin for this one either; it's applied by
+editing `.login.php` directly via a script.
+
+1. Install the **User Scripts** plugin from Community Applications.
+2. Add a new script, paste in `themes/addons/unraid-login/apply-login-theme.sh`, and schedule
+   it **"At Array Start"**.
+3. Run it once manually to apply immediately (or wait for the next array start).
+
+The script backs up the untouched `.login.php` the first time it runs (so it's always
+reversible), then injects `<link>` tags pointing at the theme's base + theme CSS on GitHub
+Pages. Re-running it is safe, it clears out any previously injected tags (including from an
+older theme.park-style script using your own container) before re-adding them, so switching
+`THEME` or re-running never leaves stale or duplicate tags behind. To remove the theme
+entirely, set `DISABLE_THEME="true"` in the script, run it once, then set it back to `"false"`.
+
 ### Multi-app themes (base + theme-options)
 
 Overseerr/Jellyseerr, Sonarr, and Radarr don't have a custom CSS field either. Apply the
@@ -73,6 +91,16 @@ themes/
   defaults/              # shared imports used by base CSS (placeholders, transparent, servarr-base)
   theme-options/         # palette-only files, reusable across every app in base/
     halo-unsc.css
+    dracula.css
+  addons/
+    unraid-login/         # Unraid login page theming (separate from the dashboard theme)
+      apply-login-theme.sh
+      alien/alien-base.css  # shared login-page layout, reused by halo below
+      halo/
+        halo-base.css
+        halo.css
+        logo/halo-logo.png       # not tracked here yet, see note below
+        wallpaper/halo-bg.png    # not tracked here yet, see note below
 index.html               # gallery / catalog page
 assets/                  # logo, favicons, app icons, social preview image
 THIRD_PARTY_NOTICES.md   # required license attribution for third-party base CSS

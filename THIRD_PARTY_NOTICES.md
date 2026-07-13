@@ -2,13 +2,14 @@
 
 ## theme.park base CSS
 
-The files under `themes/base/`, `themes/defaults/`, and
-`themes/theme-options/dracula.css` originate from
+The files under `themes/base/`, `themes/defaults/`,
+`themes/theme-options/dracula.css`, and
+`themes/addons/unraid-login/alien/alien-base.css` originate from
 [gilbN/theme.park](https://github.com/gilbN/theme.park), used here (via
-`mayberts/theme.park`) under the MIT License. `@import` paths in the base
-and defaults files were rewritten from theme.park's container-relative
-`/css/...` paths to paths relative to this repo's layout; `dracula.css` is
-unmodified aside from an added header comment.
+`mayberts/theme.park`) under the MIT License. `@import` paths were rewritten
+from theme.park's container-relative `/css/...` paths to paths relative to
+this repo's layout; `dracula.css` and `alien-base.css` are otherwise
+unmodified aside from an added header comment where present.
 
 ```
 MIT License
@@ -37,3 +38,7 @@ SOFTWARE.
 `themes/theme-options/halo-unsc.css` is a custom variant (brighter
 backgrounds + an Overseerr toast-container fix) derived from theme.park's
 stock `halo.css`, under the same license.
+
+`themes/addons/unraid-login/halo/halo.css` and `halo-base.css` are a custom
+Unraid login theme that imports theme.park's `alien-base.css` layout
+(unmodified) and layers its own palette, logo, and wallpaper on top.
