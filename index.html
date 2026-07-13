@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ThemeDock — self-hosted CSS themes</title>
+  <meta name="description" content="Self-hosted custom CSS themes for Unraid and your containers (theme-park style).">
+
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="assets/site.webmanifest">
+  <meta name="theme-color" content="#0b1220">
+
+  <meta property="og:title" content="ThemeDock">
+  <meta property="og:description" content="Self-hosted custom CSS themes for Unraid and your containers.">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta property="og:type" content="website">
+
+  <style>
+    :root {
+      --bg: #0b1220;
+      --bg-alt: #111a2e;
+      --card: #141d33;
+      --border: #22304f;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --cyan: #22d3ee;
+      --indigo: #6366f1;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(160deg, var(--bg) 0%, var(--bg-alt) 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: 2rem clamp(1rem, 5vw, 3rem) 1rem;
+    }
+    header img { width: 44px; height: 44px; }
+    header h1 {
+      font-size: 1.4rem;
+      margin: 0;
+      letter-spacing: .2px;
+    }
+    header h1 span { color: var(--cyan); }
+    main {
+      padding: 0 clamp(1rem, 5vw, 3rem) 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .tagline {
+      color: var(--muted);
+      max-width: 60ch;
+      margin: 0 0 2rem;
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+    .card .app-tag {
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--cyan);
+      font-weight: 600;
+    }
+    .card h2 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.45;
+      flex: 1;
+    }
+    .swatch {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+    }
+    .actions {
+      display: flex;
+      gap: .5rem;
+    }
+    button, a.btn {
+      font: inherit;
+      font-size: .82rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: #0e1626;
+      color: var(--text);
+      border-radius: 8px;
+      padding: .5rem .7rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    button.primary {
+      background: linear-gradient(90deg, var(--cyan), var(--indigo));
+      border: none;
+      color: #04121a;
+    }
+    button:active { transform: translateY(1px); }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: .8rem;
+      padding: 2rem 1rem;
+    }
+    footer a { color: var(--cyan); }
+    code.inline {
+      background: #0e1626;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: .1rem .35rem;
+      font-size: .85em;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="assets/icon.svg" alt="">
+    <h1>Theme<span>Dock</span></h1>
+  </header>
+
+  <main>
+    <p class="tagline">
+      Self-hosted custom CSS themes for Unraid and your containers — a theme-park-style
+      catalog you point your apps' custom CSS URL at. Grab a raw URL below and drop it in.
+    </p>
+
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <footer>
+    Built with <code class="inline">themes/manifest.json</code> · contribute a theme via pull request on
+    <a href="https://github.com/mayberts/themedock">GitHub</a>
+  </footer>
+
+  <script>
+    const REPO_RAW_BASE = "https://raw.githubusercontent.com/mayberts/themedock/main/";
+
+    async function render() {
+      const res = await fetch("themes/manifest.json");
+      const themes = await res.json();
+      const grid = document.getElementById("grid");
+
+      for (const theme of themes) {
+        const rawUrl = REPO_RAW_BASE + theme.path;
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="swatch" style="background:${theme.accent}"></div>
+          <div class="app-tag">${theme.app}</div>
+          <h2>${theme.name}</h2>
+          <p>${theme.description}</p>
+          <div class="actions">
+            <button class="primary" data-url="${rawUrl}">Copy raw CSS URL</button>
+            <a class="btn" href="${theme.path}" target="_blank" rel="noopener">View CSS</a>
+          </div>
+        `;
+        card.querySelector("button.primary").addEventListener("click", async (e) => {
+          const btn = e.currentTarget;
+          await navigator.clipboard.writeText(btn.dataset.url);
+          const original = btn.textContent;
+          btn.textContent = "Copied!";
+          setTimeout(() => (btn.textContent = original), 1200);
+        });
+        grid.appendChild(card);
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>
