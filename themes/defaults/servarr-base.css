@@ -20,8 +20,9 @@
     --linkHoverColor: var(--link-color-hover) !important;
     }
 
+html,
 body {
-    background: var(--main-bg-color);
+    background: var(--main-bg-color) !important;
     background-repeat: repeat, no-repeat;
     background-attachment: fixed, fixed;
     background-position: center center, center center;
@@ -30,6 +31,19 @@ body {
     -moz-background-size: auto, cover;
     -o-background-size: auto, cover;
     color: var(--text);
+}
+
+/* Newer Sonarr/Radarr builds wrap the app in #root > .Page-page-* >
+   (.PageHeader-header-*, .Page-main-* > (.PageSidebar-sidebarContainer-*,
+   .PageContent-content-*)). Those wrapper layers paint their own opaque
+   background by default, which sits on top of <body> and hides the theme
+   everywhere except the header/sidebar's semi-transparent overlays. Force
+   the theme color through every layer so the whole page is covered. */
+#root,
+[class*="Page-page-"],
+[class*="Page-main-"],
+[class*="PageContent-content-"] {
+    background: var(--main-bg-color) !important;
 }
 
 *::-webkit-scrollbar-thumb,
