@@ -42,3 +42,20 @@ stock `halo.css`, under the same license.
 `themes/addons/unraid-login/halo/halo.css` and `halo-base.css` are a custom
 Unraid login theme that imports theme.park's `alien-base.css` layout
 (unmodified) and layers its own palette, logo, and wallpaper on top.
+
+`themes/addons/unraid-login/alien/alien.css` is theme.park's stock "Hallway"
+Alien login variant, unmodified aside from path rewrites, under the same
+license above. Its two images are also carried over from theme.park:
+
+- `alien-bg.jpg` (from `wallpaper/hallway.jpg`): a Nostromo-hallway-style
+  wallpaper image.
+- `alien-logo.png` (from `logo/wings_green.png`): a Weyland-Yutani-style
+  wings logo.
+
+Both depict elements from the *Alien* film franchise (20th Century Studios)
+rather than original artwork; they're included here as-is from theme.park's
+repository under its MIT license, but that license covers theme.park's code
+and packaging, not necessarily underlying rights to franchise imagery.
+Replace these two files with your own art if you want to avoid that
+exposure entirely; `alien.css` only reads them through the `--main-bg` and
+`--logo` custom properties.

@@ -1,0 +1,53 @@
+/* Alien (Nostromo hallway) themed Unraid login page
+   Layout rules live in alien-base.css; this file only sets the look.
+
+   Served from:
+     https://mayberts.github.io/themedock/themes/addons/unraid-login/alien/alien.css
+
+   Required sibling files in this alien/ folder:
+     alien-base.css   (layout)
+     alien-bg.jpg      (Nostromo hallway wallpaper)
+     alien-logo.png     (green Weyland-Yutani wings logo)
+
+   Wallpaper and logo are ported from theme.park (MIT licensed), credit in
+   THIRD_PARTY_NOTICES.md.
+
+   IMPORTANT: --main-bg and --logo below use absolute URLs on purpose, not
+   relative ones. Relative url()s inside a custom property are resolved
+   against whichever stylesheet actually *uses* the variable (here,
+   alien-base.css), not the stylesheet that *defines* it. A relative path
+   here would 404 against the wrong folder. Keep these absolute if you copy
+   this file elsewhere.
+*/
+
+@import url("./alien-base.css");
+
+:root {
+    --main-bg:
+        radial-gradient(ellipse at center, rgba(0, 255, 119, 0.1) 0, rgba(0, 255, 119, 0) 100%) center center / cover no-repeat fixed,
+        url("https://mayberts.github.io/themedock/themes/addons/unraid-login/alien/alien-bg.jpg") center center / cover no-repeat fixed;
+
+    --logo: url("https://mayberts.github.io/themedock/themes/addons/unraid-login/alien/alien-logo.png") center no-repeat;
+
+    /* Nostromo HUD green palette */
+    --text-color:               #37f592;
+    --input-color:              #37f592;
+    --link-color:                #37f592;
+    --link-color-hover:         #68ffff;
+    --case-color:                #37f592;
+
+    --button-text-color:        #37f592;
+    --button-text-color-hover:  #000;
+    --button-color:              #37f592;
+    --button-color2:            #0c833d;
+    --button-color-hover:       #68ffff;
+    --button-color2-hover:      #68ffff;
+
+    --input-font: 'Share Tech Mono', monospace;
+    --text-font:  'Share Tech Mono', monospace;
+
+    --div-background-color-15: rgba(0, 255, 111, 0.03);
+
+    --text-shadow: 0 0 8px;
+    --box-shadow:  0 0 15px;
+}

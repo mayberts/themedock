@@ -46,6 +46,14 @@ older theme.park-style script using your own container) before re-adding them, s
 `THEME` or re-running never leaves stale or duplicate tags behind. To remove the theme
 entirely, set `DISABLE_THEME="true"` in the script, run it once, then set it back to `"false"`.
 
+Set `THEME` in the script to one of:
+
+- `halo`: Halo UNSC HUD look, cyan text and a Spartan-blue palette.
+- `alien`: Nostromo hallway wallpaper, green terminal HUD palette.
+
+Both share the same underlying layout (`alien/alien-base.css`); only the palette and
+background/logo images differ.
+
 ### Multi-app themes (base + theme-options)
 
 Overseerr/Jellyseerr, Sonarr, Radarr, Prowlarr, and Lidarr don't have a custom CSS field
@@ -97,7 +105,11 @@ themes/
   addons/
     unraid-login/         # Unraid login page theming (separate from the dashboard theme)
       apply-login-theme.sh
-      alien/alien-base.css  # shared login-page layout, reused by halo below
+      alien/
+        alien-base.css     # shared login-page layout, reused by halo below
+        alien.css
+        alien-logo.png
+        alien-bg.jpg
       halo/
         halo-base.css
         halo.css
