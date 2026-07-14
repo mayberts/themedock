@@ -14,7 +14,8 @@
     { "app": "Overseerr", "slug": "overseerr", "basePath": "themes/base/overseerr/overseerr-base.css" },
     { "app": "Sonarr", "slug": "sonarr", "basePath": "themes/base/sonarr/sonarr-base.css" },
     { "app": "Radarr", "slug": "radarr", "basePath": "themes/base/radarr/radarr-base.css" },
-    { "app": "Prowlarr", "slug": "prowlarr", "basePath": "themes/base/prowlarr/prowlarr-base.css" }
+    { "app": "Prowlarr", "slug": "prowlarr", "basePath": "themes/base/prowlarr/prowlarr-base.css" },
+    { "app": "Lidarr", "slug": "lidarr", "basePath": "themes/base/lidarr/lidarr-base.css" }
   ],
   "themeOptions": [
     {

@@ -48,8 +48,8 @@ entirely, set `DISABLE_THEME="true"` in the script, run it once, then set it bac
 
 ### Multi-app themes (base + theme-options)
 
-Overseerr/Jellyseerr, Sonarr, Radarr, and Prowlarr don't have a custom CSS field either. Apply
-the stylesheets by injecting them at your reverse proxy instead.
+Overseerr/Jellyseerr, Sonarr, Radarr, Prowlarr, and Lidarr don't have a custom CSS field
+either. Apply the stylesheets by injecting them at your reverse proxy instead.
 
 **Nginx Proxy Manager**: edit the app's Proxy Host, open the **Advanced** tab, and add to
 **Custom Nginx Configuration**:
@@ -89,6 +89,7 @@ themes/
     sonarr/sonarr-base.css
     radarr/radarr-base.css
     prowlarr/prowlarr-base.css
+    lidarr/lidarr-base.css
   defaults/              # shared imports used by base CSS (placeholders, transparent, servarr-base)
   theme-options/         # palette-only files, reusable across every app in base/
     halo-unsc.css
@@ -137,7 +138,7 @@ THIRD_PARTY_NOTICES.md   # required license attribution for third-party base CSS
    existing theme-option:
 
 ```json
-{ "app": "Lidarr", "slug": "lidarr", "basePath": "themes/base/lidarr/lidarr-base.css" }
+{ "app": "Readarr", "slug": "readarr", "basePath": "themes/base/readarr/readarr-base.css" }
 ```
 
 ### A new theme-option (palette, works across all apps)
