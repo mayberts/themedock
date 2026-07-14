@@ -240,9 +240,13 @@ a:hover {
 /* HEADER */
 
 [class*="PageHeader-header-"] {
-    background: var(--transparency-dark-35);
-    color: var(--text);
-    box-shadow: none;
+    /* !important: Sonarr/Radarr load their own component CSS (e.g.
+       PageHeader.css) dynamically via JS after the initial page load,
+       which lands later in <head> than our sub_filter-injected stylesheet
+       and would otherwise win equal-specificity cascade ties. */
+    background: var(--transparency-dark-35) !important;
+    color: var(--text) !important;
+    box-shadow: none !important;
 }
 
 /* SEARCH DROPDOWN HEADER */
@@ -253,11 +257,11 @@ a:hover {
 
 /* SIDE MENU */
 [class*="PageSidebar-sidebarContainer-"] {
-    background: var(--transparency-dark-25);
+    background: var(--transparency-dark-25) !important;
 }
 
 [class*="PageSidebar-sidebar-"] {
-    background-color: transparent;
+    background-color: transparent !important;
 }
 
 [class*="PageSidebarItem-link-"] {
