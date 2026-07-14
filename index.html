@@ -119,6 +119,43 @@
       border: 1px solid var(--border);
       background: #0e1626;
       margin-bottom: .2rem;
+      cursor: zoom-in;
+      transition: filter .15s;
+    }
+    .preview:hover {
+      filter: brightness(1.08);
+    }
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 9, 16, 0.88);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(1rem, 5vw, 4rem);
+      cursor: zoom-out;
+    }
+    .lightbox.active {
+      display: flex;
+    }
+    .lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 10px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.5rem;
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--text);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: .4rem .6rem;
     }
     .actions {
       display: flex;
@@ -200,6 +237,11 @@
     Built with <code class="inline">themes/manifest.json</code> · contribute a theme via pull request on
     <a href="https://github.com/mayberts/themedock">GitHub</a>
   </footer>
+
+  <div id="lightbox" class="lightbox">
+    <button class="lightbox-close" aria-label="Close">&times;</button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
 
   <script>
     const SITE_BASE = "https://mayberts.github.io/themedock/";
@@ -289,7 +331,32 @@
       }
     }
 
+    function setupLightbox() {
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightbox-img");
+
+      function open(src, alt) {
+        lightboxImg.src = src;
+        lightboxImg.alt = alt;
+        lightbox.classList.add("active");
+      }
+      function close() {
+        lightbox.classList.remove("active");
+        lightboxImg.src = "";
+      }
+
+      document.addEventListener("click", (e) => {
+        const img = e.target.closest("img.preview");
+        if (img) open(img.src, img.alt);
+      });
+      lightbox.addEventListener("click", close);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") close();
+      });
+    }
+
     render();
+    setupLightbox();
   </script>
 </body>
 </html>
