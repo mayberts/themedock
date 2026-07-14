@@ -94,6 +94,36 @@
       letter-spacing: .06em;
       color: var(--cyan);
       font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    .app-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+    }
+    .app-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      font: inherit;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--muted);
+      background: #0e1626;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: .3rem .65rem;
+      cursor: pointer;
+    }
+    .app-pill svg {
+      flex-shrink: 0;
+    }
+    .app-pill.active {
+      color: #04121a;
+      background: linear-gradient(90deg, var(--cyan), var(--indigo));
+      border-color: transparent;
     }
     .card h2 {
       margin: 0;
@@ -206,16 +236,13 @@
   </header>
 
   <main>
-    <p class="tagline">
-      Self-hosted custom CSS themes for Unraid and your containers. Grab a URL, snippet, or
-      reverse-proxy config below.
-    </p>
+    <p class="tagline">Self-hosted CSS themes for Unraid and your containers.</p>
 
     <section>
       <h2 class="section-title">Unraid</h2>
       <p class="section-desc">
-        Standalone, self-contained stylesheets. Install the <strong>Custom WebUi CSS</strong>
-        plugin from Community Applications, then paste the raw URL into its settings field.
+        Install the <strong>Custom WebUi CSS</strong> plugin from Community Applications, then
+        paste the raw URL into its settings field.
       </p>
       <div id="standalone-grid" class="grid"></div>
     </section>
@@ -223,11 +250,9 @@
     <section>
       <h2 class="section-title">Multi-app themes</h2>
       <p class="section-desc">
-        Two-layer theming: each app has a base stylesheet, and a theme-options file sets the
-        palette on top of it. None of these apps have a native custom CSS field, so apply
-        them at your reverse proxy instead. "Copy NPM config" gives you a ready-to-paste
-        Nginx Proxy Manager snippet (Advanced tab &rarr; Custom Nginx Configuration); "Copy
-        @import snippet" is for setups that do accept raw CSS text (e.g. Stylus).
+        None of these apps have a native custom CSS field, so themes apply at your reverse
+        proxy instead. Pick an app, then "Copy NPM config" for Nginx Proxy Manager
+        (Advanced tab) or "Copy @import snippet" for setups that accept raw CSS text.
       </p>
       <div id="combo-grid" class="grid"></div>
     </section>
@@ -253,13 +278,25 @@
         : `<div class="swatch" style="background:${accent}"></div>`;
     }
 
+    const APP_ICONS = {
+      unraid: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2.5" width="12" height="3.5" rx=".8" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="7" width="12" height="3.5" rx=".8" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="11.5" width="12" height="2" rx=".8" stroke="currentColor" stroke-width="1.3"/></svg>',
+      overseerr: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 3.5C2 2.67 2.67 2 3.5 2h9C13.33 2 14 2.67 14 3.5v6c0 .83-.67 1.5-1.5 1.5H6l-3 2.5V11h-.5C1.67 11 1 10.33 1 9.5" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>',
+      sonarr: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="8" rx="1.2" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 4L8 1.5L10.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      radarr: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="6.5" width="12" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M2 6.5L3.5 3H12.5L14 6.5" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.2 3L5.3 6.5M8.2 3L9.3 6.5" stroke="currentColor" stroke-width="1"/></svg>',
+    };
+    function appIcon(slug) {
+      return APP_ICONS[slug] || '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.3"/></svg>';
+    }
+
+    async function copyToClipboard(btn, text) {
+      await navigator.clipboard.writeText(text);
+      const original = btn.textContent;
+      btn.textContent = "Copied!";
+      setTimeout(() => (btn.textContent = original), 1200);
+    }
+
     function copyButton(btn, text) {
-      btn.addEventListener("click", async () => {
-        await navigator.clipboard.writeText(text);
-        const original = btn.textContent;
-        btn.textContent = "Copied!";
-        setTimeout(() => (btn.textContent = original), 1200);
-      });
+      btn.addEventListener("click", () => copyToClipboard(btn, text));
     }
 
     function renderStandalone(themes) {
@@ -270,7 +307,7 @@
         card.className = "card";
         card.innerHTML = `
           ${withPreview(theme.accent, theme.preview, theme.name)}
-          <div class="app-tag">${theme.app}</div>
+          <div class="app-tag">${appIcon(theme.slug)}${theme.app}</div>
           <h2>${theme.name}</h2>
           <p>${theme.description}</p>
           <div class="actions">
@@ -287,33 +324,65 @@
       const grid = document.getElementById("combo-grid");
       for (const opt of themeOptions) {
         const optUrl = SITE_BASE + opt.path;
-        for (const app of apps) {
-          const baseUrl = SITE_BASE + app.basePath;
-          const importSnippet = `@import url("${baseUrl}");\n@import url("${optUrl}");`;
-          const npmSnippet = [
+        let selectedIdx = 0;
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          ${withPreview(opt.accent, opt.preview, opt.name)}
+          <div class="app-picker">
+            ${apps
+              .map(
+                (app, i) => `
+                  <button class="app-pill${i === 0 ? " active" : ""}" data-idx="${i}">
+                    ${appIcon(app.slug)}<span>${app.app}</span>
+                  </button>`
+              )
+              .join("")}
+          </div>
+          <h2>${opt.name}</h2>
+          <p>${opt.description}</p>
+          <div class="actions">
+            <button class="primary npm-btn">Copy NPM config</button>
+            <button class="import-btn">Copy @import snippet</button>
+            <a class="btn base-link" target="_blank" rel="noopener">Base CSS</a>
+            <a class="btn" href="${opt.path}" target="_blank" rel="noopener">Theme file</a>
+          </div>
+        `;
+
+        const baseLink = card.querySelector(".base-link");
+        function syncBaseLink() {
+          baseLink.href = apps[selectedIdx].basePath;
+        }
+        syncBaseLink();
+
+        card.querySelectorAll(".app-pill").forEach((pill) => {
+          pill.addEventListener("click", () => {
+            selectedIdx = Number(pill.dataset.idx);
+            card
+              .querySelectorAll(".app-pill")
+              .forEach((p) => p.classList.toggle("active", p === pill));
+            syncBaseLink();
+          });
+        });
+
+        card.querySelector("button.npm-btn").addEventListener("click", (e) => {
+          const baseUrl = SITE_BASE + apps[selectedIdx].basePath;
+          const snippet = [
             'proxy_set_header Accept-Encoding "";',
             `sub_filter '</head>' '<link rel="stylesheet" href="${baseUrl}"><link rel="stylesheet" href="${optUrl}"></head>';`,
             "sub_filter_once on;",
           ].join("\n");
+          copyToClipboard(e.currentTarget, snippet);
+        });
 
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            ${withPreview(opt.accent, opt.preview, `${app.app}: ${opt.name}`)}
-            <div class="app-tag">${app.app}</div>
-            <h2>${opt.name}</h2>
-            <p>${opt.description}</p>
-            <div class="actions">
-              <button class="primary npm-btn">Copy NPM config</button>
-              <button class="import-btn">Copy @import snippet</button>
-              <a class="btn" href="${app.basePath}" target="_blank" rel="noopener">Base CSS</a>
-              <a class="btn" href="${opt.path}" target="_blank" rel="noopener">Theme file</a>
-            </div>
-          `;
-          copyButton(card.querySelector("button.npm-btn"), npmSnippet);
-          copyButton(card.querySelector("button.import-btn"), importSnippet);
-          grid.appendChild(card);
-        }
+        card.querySelector("button.import-btn").addEventListener("click", (e) => {
+          const baseUrl = SITE_BASE + apps[selectedIdx].basePath;
+          const snippet = `@import url("${baseUrl}");\n@import url("${optUrl}");`;
+          copyToClipboard(e.currentTarget, snippet);
+        });
+
+        grid.appendChild(card);
       }
     }
 
